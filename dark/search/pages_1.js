@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['deprecated_20list_2937',['Deprecated List',['../deprecated.html',1,'']]]
+  ['changelog_3462',['Changelog',['../md_CHANGELOG.html',1,'']]],
+  ['core_20functionality_3463',['Core Functionality',['../group__nwnx.html',1,'']]]
 ];
