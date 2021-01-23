@@ -124,10 +124,21 @@ New NWScript Functions</h4>
 <ul>
 <li>Creature: ComputeSafeLocation()</li>
 <li>Creature: DoPerceptionUpdateOnCreature()</li>
+<li>Creature: {Get/Set}PersonalSpace()</li>
+<li>Creature: {Get/Set}CreaturePersonalSpace()</li>
+<li>Creature: {Get/Set}Height()</li>
+<li>Creature: {Get/Set}HitDistance()</li>
+<li>Creature: {Get/Set}PreferredAttackDistance()</li>
 <li>Encounter: GetGeometry()</li>
 <li>Encounter: SetGeometry()</li>
 <li>Util: GetInstructionLimit()</li>
 <li>Util: {Get|Set}InstructionsExecuted()</li>
+<li>Util: <a class="el" href="group__util.html#gab1478de40af08e03284db6fe313f319c">NWNX_Util_GetHighResTimeStamp()</a> (in preparation for removing the now deprecated NWNX_Time)</li>
+<li>Area: NWNX_Area_GetAmbientSound{Day/Night}()</li>
+<li>Area: NWNX_Area_GetAmbientSound{Day/Night}Volume</li>
+<li>Admin: {Get/Set}MinLevel()</li>
+<li>Admin: {Get/Set}MaxLevel()</li>
+<li>Object: {Get|Set}AILevel()</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md12"></a>
 Changed</h2>
@@ -138,6 +149,7 @@ Changed</h2>
 Deprecated</h2>
 <ul>
 <li>Data: The NWNX_Data array implementation is deprecated. SQLite implementation available. Shim include file provided for compatibility.</li>
+<li>Time: The NWNX_Time implementation is deprecated. A SQLite implementation is now in use. The include file inc_sqlite_time is provided.</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md14"></a>
 Removed</h2>
@@ -977,7 +989,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Wed Jan 20 2021 22:16:00 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sat Jan 23 2021 17:44:56 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>
