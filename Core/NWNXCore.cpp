@@ -6,7 +6,6 @@
 #include "API/CServerExoApp.hpp"
 #include "API/CNWSModule.hpp"
 #include "API/CExoLinkedListInternal.hpp"
-#include "API/CExoLinkedListNode.hpp"
 #include "API/CExoResMan.hpp"
 #include "API/CExoBase.hpp"
 #include "API/CExoAliasList.hpp"
@@ -18,7 +17,6 @@
 #include <regex>
 #include <cstdio>
 #include <sstream>
-#include <dlfcn.h>
 #include <filesystem>
 
 using namespace NWNXLib;
@@ -58,7 +56,10 @@ extern "C" void nwnx_signal_handler(int sig)
     }
 }
 
+#if !WIN32
 // Don't allow the -quite flag to close stdout/stderr, we print important info there.
+#include <dlfcn.h>
+
 extern "C" FILE *freopen64(const char *filename, const char *mode, FILE *stream)
 {
     if ((stream == stdout || stream == stderr) && !strcmp(filename, "/dev/null"))
@@ -77,7 +78,7 @@ extern "C" FILE *freopen64(const char *filename, const char *mode, FILE *stream)
         real = (Type)dlsym(RTLD_NEXT, "freopen64");
     return real(filename, mode, stream);
 }
-
+#endif
 
 namespace {
 
