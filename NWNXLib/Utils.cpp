@@ -28,6 +28,7 @@
 #include "API/CExoArrayList.hpp"
 #include "../Core/NWNXCore.hpp"
 
+#include <numbers>
 #include <cmath>
 #include <sstream>
 
@@ -438,7 +439,7 @@ void SetOrientation(CNWSObject *pObject, float facing)
     if (!pObject)
         return;
 
-    float radians = facing * (M_PI / 180);
+    float radians = facing * (std::numbers::pi / 180);
     auto vOrientation = Vector{std::cos(radians), std::sin(radians), 0.0f};
 
     if (auto *pPlaceable = Utils::AsNWSPlaceable(pObject))
