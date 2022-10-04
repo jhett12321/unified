@@ -17,8 +17,8 @@
 #include "API/CExoLinkedListNode.hpp"
 #include "API/CNWSModule.hpp"
 #include "API/CNWSPlayerTURD.hpp"
-#include <unistd.h>
-#include <csignal>
+
+#include <filesystem>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -131,7 +131,9 @@ NWNX_EXPORT Events::ArgumentStack DeletePlayerCharacter(Events::ArgumentStack&& 
 
     LOG_NOTICE("Deleting %s %s", filename, bPreserveBackup ? "(backed up)" : "(no backup)");
 
-    if( access( filename.c_str(), F_OK ) == -1 )
+
+
+    if( !std::filesystem::exists(filename) )
     {
         LOG_ERROR("File %s not found.", filename);
         return {};
@@ -155,13 +157,13 @@ NWNX_EXPORT Events::ArgumentStack DeletePlayerCharacter(Events::ArgumentStack&& 
             {
                 std::string backup = filename + ".deleted";
                 int i = 0;
-                while ( access( backup.append(std::to_string(i)).c_str(), F_OK ) != -1 )
+                while ( std::filesystem::exists( backup.append(std::to_string(i)) ) )
                     i++;
-                rename(filename.c_str(), backup.append(std::to_string(i)).c_str());
+                std::filesystem::rename(filename, backup.append(std::to_string(i)).c_str());
             }
             else
             {
-                unlink(filename.c_str());
+                std::filesystem::remove(filename);
             }
 
             std::string chararacterFullName = characterName;
