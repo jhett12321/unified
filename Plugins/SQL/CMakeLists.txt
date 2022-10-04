@@ -32,4 +32,6 @@ endif (SQLITE3_FOUND)
 
 # The code likes to use variable length arrays which technically compile but aren't a
 # C++ feature. This will probably need to be refactored for Windows support.
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-vla -Wno-vla-extension")
+if(!MSVC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-vla -Wno-vla-extension")
+endif()
