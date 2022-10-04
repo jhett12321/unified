@@ -14,7 +14,8 @@ using namespace NWNXLib::API;
 namespace DotNET {
 
 std::vector<void*> GetExports();
-static void DotNET() __attribute__((constructor));
+
+PluginEntryPoint(DotNET)
 
 static hostfxr_initialize_for_runtime_config_fn hostfxr_initialize_for_runtime_config;
 static hostfxr_get_runtime_delegate_fn          hostfxr_get_runtime_delegate;

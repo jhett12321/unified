@@ -78,7 +78,7 @@ void CNWSCreatureStats__UpdateCombatInformation(CNWSCreatureStats*);
 int32_t CNWSCreature__GetTotalEffectBonus(CNWSCreature*, uint8_t, CNWSObject*, BOOL, BOOL, uint8_t, uint8_t, uint8_t, uint8_t, BOOL);
 
 
-void BonusStacking() __attribute__((constructor));
+PluginEntryPoint(BonusStacking)
 void BonusStacking()
 {
     s_nAbilityStackingMode = std::clamp(Config::Get<int>("ABILITY", 0), 0, static_cast<int>(NostackMode::CustomTypes));
