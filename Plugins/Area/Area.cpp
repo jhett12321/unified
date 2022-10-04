@@ -28,6 +28,7 @@
 
 #include <cmath>
 #include <set>
+#include <numbers>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -1042,20 +1043,20 @@ NWNX_EXPORT ArgumentStack RotateArea(ArgumentStack&& args)
             {
                 case 1:
                 {
-                    vOrientation.x = (std::cos(std::acos(vOrientation.x) - (M_PI/2)));//less half-radian
-                    vOrientation.y = (std::sin(std::asin(vOrientation.y) - (M_PI/2)));
+                    vOrientation.x = (std::cos(std::acos(vOrientation.x) - (std::numbers::pi/2)));//less half-radian
+                    vOrientation.y = (std::sin(std::asin(vOrientation.y) - (std::numbers::pi/2)));
                     break;
                 }
                 case 2:
                 {
-                    vOrientation.x = (std::cos(std::acos(vOrientation.x) + M_PI));//add 1 radian
-                    vOrientation.y = (std::sin(std::asin(vOrientation.y) + M_PI));
+                    vOrientation.x = (std::cos(std::acos(vOrientation.x) + std::numbers::pi));//add 1 radian
+                    vOrientation.y = (std::sin(std::asin(vOrientation.y) + std::numbers::pi));
                     break;
                 }
                 case 3:
                 {
-                    vOrientation.x = (std::cos(std::acos(vOrientation.x) + (M_PI/2)));//Add half-radian
-                    vOrientation.y = (std::sin(std::asin(vOrientation.y) + (M_PI/2)));
+                    vOrientation.x = (std::cos(std::acos(vOrientation.x) + (std::numbers::pi/2)));//Add half-radian
+                    vOrientation.y = (std::sin(std::asin(vOrientation.y) + (std::numbers::pi/2)));
                     break;
                 }
             }
