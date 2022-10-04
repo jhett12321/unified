@@ -11,7 +11,14 @@
 #include <functional>
 #include <memory>
 
-
+#if WIN32
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#undef SendMessage
+#undef GetMessage
+#undef min
+#undef max
+#endif
 
 namespace NWNXLib
 {
@@ -33,6 +40,21 @@ namespace NWNXLib
 #define ASSERT_OR_RETURN(condition, retval) ASSERT_OR_RETURN_IMPL(condition, retval)
 
 #define SCOPEGUARD(x) SCOPEGUARD_IMPL(x)
+
+#if WIN32
+#define PluginEntryPoint(name) \
+void name();                         \
+BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved) \
+{ \
+if(fdwReason == DLL_PROCESS_ATTACH) { \
+name(); \
+} \
+return TRUE; \
+}
+#else
+#define PluginEntryPoint(name) \
+void name() __attribute__((constructor));
+#endif
 
 namespace Config
 {
