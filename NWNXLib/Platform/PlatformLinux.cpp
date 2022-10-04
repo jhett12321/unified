@@ -4,6 +4,7 @@
 
 #include <execinfo.h>
 #include <signal.h>
+#include <dlfcn.h>
 #include <map>
 
 namespace NWNXLib::Platform
@@ -49,6 +50,26 @@ std::string GetStackTrace(uint8_t levels)
         free(resolvedFrames);
     }
     return std::string(buffer);
+}
+
+void* OpenLibrary(const char* fileName, int flags)
+{
+    return dlopen(fileName, flags);
+}
+
+int CloseLibrary(void* handle)
+{
+    return dlclose(handle);
+}
+
+void* GetSymbol(void* handle, const char* name)
+{
+    return dlsym(handle, name);
+}
+
+const char* GetError()
+{
+    return dlerror();
 }
 
 }

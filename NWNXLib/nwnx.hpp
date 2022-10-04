@@ -131,8 +131,18 @@ namespace MessageBus
 
 namespace Platform
 {
+    const int RTLD_GLOBAL = 0x100;
+    const int RTLD_LOCAL = 0x000;
+
+    const int RTLD_LAZY = 0x000;
+    const int RTLD_NOW = 0x001;
+
     bool IsDebuggerPresent();
     std::string GetStackTrace(uint8_t levels);
+    void* OpenLibrary(const char* fileName, int flags);
+    int CloseLibrary(void* handle);
+    void* GetSymbol(void* handle, const char* name);
+    const char* GetError();
 }
 
 namespace Commands
