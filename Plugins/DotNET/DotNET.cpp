@@ -93,8 +93,8 @@ static bool InitThunks()
     auto get_hostfxr_path = (int(*)(char*,size_t*,const void*))Platform::GetSymbol(nethost, "get_hostfxr_path");
     ASSERT_OR_RETURN(get_hostfxr_path != nullptr, false);
 
-    char buffer[PATH_MAX];
-    size_t buffer_size = PATH_MAX;
+    char buffer[255];
+    size_t buffer_size = 255;
     ASSERT_OR_RETURN(get_hostfxr_path(buffer, &buffer_size, nullptr) == 0, false);
     Platform::CloseLibrary(nethost);
 
@@ -131,7 +131,7 @@ static void DotNET()
     // Load .NET Core
     hostfxr_handle cxt = nullptr;
     auto runtimeconfig = *assembly + ".runtimeconfig.json";
-    int rc = hostfxr_initialize_for_runtime_config(runtimeconfig.c_str(), nullptr, &cxt);
+    int rc = hostfxr_initialize_for_runtime_config(reinterpret_cast<const char_t*>(runtimeconfig.c_str()), nullptr, &cxt);
     if (rc != 0 || cxt == nullptr)
         LOG_FATAL("Unable to load runtime config '%s'; rc=0x%x", runtimeconfig, rc);
 
@@ -147,8 +147,9 @@ static void DotNET()
     component_entry_point_fn bootstrap = nullptr;
     auto dll = *assembly + ".dll";
     auto full_ep = entrypoint + ", " + assembly->substr(assembly->find_last_of("/\\") + 1);
-    rc = load_assembly_and_get_function_pointer(dll.c_str(), full_ep.c_str(),
-                                                "Bootstrap", nullptr, nullptr, (void**)&bootstrap);
+    rc = load_assembly_and_get_function_pointer(reinterpret_cast<const char_t*>(dll.c_str()),
+        reinterpret_cast<const char_t*>(full_ep.c_str()),
+        reinterpret_cast<const char_t*>("Bootstrap"), nullptr, nullptr, (void**)&bootstrap);
     if (rc != 0 || bootstrap == nullptr)
         LOG_FATAL("Unable to get %s.Bootstrap() function: dll='%s'; rc=0x%x", full_ep, dll, rc);
 
