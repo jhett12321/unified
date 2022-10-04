@@ -131,11 +131,13 @@ namespace MessageBus
 
 namespace Platform
 {
-    const int RTLD_GLOBAL = 0x100;
-    const int RTLD_LOCAL = 0x000;
+    const int RTLD_LAZY = 0x00001;
+    const int RTLD_NOW = 0x00002;
 
-    const int RTLD_LAZY = 0x000;
-    const int RTLD_NOW = 0x001;
+    const int RTLD_GLOBAL = 0x00100;
+    const int RTLD_LOCAL = 0;
+
+    const int RTLD_NODELETE = 0x01000;
 
     bool IsDebuggerPresent();
     std::string GetStackTrace(uint8_t levels);

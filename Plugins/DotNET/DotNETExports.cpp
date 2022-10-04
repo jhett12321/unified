@@ -9,8 +9,6 @@
 #include "API/CNWVirtualMachineCommands.hpp"
 #include "API/CWorldTimer.hpp"
 
-#include <dlfcn.h>
-
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
@@ -40,16 +38,16 @@ static std::string s_nwnxActiveFunction;
 
 static uintptr_t GetFunctionPointer(const char* name)
 {
-    void* core = dlopen("NWNX_Core.so", RTLD_LAZY);
+    void* core = Platform::OpenLibrary("NWNX_Core.so", Platform::RTLD_LAZY);
     if (!core)
     {
-        LOG_ERROR("Failed to open core handle: %s", dlerror());
+        LOG_ERROR("Failed to open core handle: %s", Platform::GetError());
         return 0;
     }
-    auto ret = reinterpret_cast<uintptr_t>(dlsym(core, name));
+    auto ret = reinterpret_cast<uintptr_t>(Platform::GetSymbol(core, name));
     if (ret == 0)
-        LOG_WARNING("Failed to get symbol name '%s': %s", name, dlerror());
-    dlclose(core);
+        LOG_WARNING("Failed to get symbol name '%s': %s", name, Platform::GetError());
+    Platform::CloseLibrary(core);
     return ret;
 }
 

@@ -91,7 +91,7 @@ extern "C" char *fgets(char * str, int num, FILE *stream)
     using Type = char*(*)(char*,int,FILE*);
     static Type real;
     if (!real)
-        real = (Type)dlsym(RTLD_NEXT, "fgets");
+        real = (Type)NWNXLib::Platform::GetSymbol(RTLD_NEXT, "fgets");
 
     char *ret = real(str, num, stream);
     if (ret && stream == stdin && num == 1024)

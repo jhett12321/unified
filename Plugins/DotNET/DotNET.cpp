@@ -7,8 +7,6 @@
 
 #include "sdk/coreclr_delegates.h"
 #include "sdk/hostfxr.h"
-#include <dirent.h>
-#include <dlfcn.h>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -29,7 +27,7 @@ static bool InitThunks()
 
     if (auto nethost_path = Config::Get<std::string>("NETHOST_PATH"))
     {
-        nethost = dlopen(nethost_path->c_str(), RTLD_LAZY);
+        nethost = Platform::OpenLibrary(nethost_path->c_str(), Platform::RTLD_LAZY);
         ASSERT_MSG(nethost, "NETHOST_PATH specified ('%s') but failed to open libnethost.so at that path", nethost_path->c_str());
     }
 
@@ -42,7 +40,7 @@ static bool InitThunks()
         };
         for (size_t i = 0; i < std::size(paths); i++)
         {
-            nethost = dlopen(paths[i], RTLD_LAZY);
+            nethost = Platform::OpenLibrary(paths[i], Platform::RTLD_LAZY);
             if (nethost)
             {
                 LOG_INFO("Loaded libnethost.so from: %s (autodetected)", paths[i]);
@@ -81,7 +79,7 @@ static bool InitThunks()
                 std::sort(paths.begin(), paths.end(), std::greater<std::string>());
                 for (std::string path : paths)
                 {
-                    nethost = dlopen(path.c_str(), RTLD_LAZY);
+                    nethost = Platform::OpenLibrary(path.c_str(), Platform::RTLD_LAZY);
 
                     if (nethost)
                     {
@@ -100,20 +98,20 @@ static bool InitThunks()
         return false;
     }
 
-    auto get_hostfxr_path = (int(*)(char*,size_t*,const void*))dlsym(nethost, "get_hostfxr_path");
+    auto get_hostfxr_path = (int(*)(char*,size_t*,const void*))Platform::GetSymbol(nethost, "get_hostfxr_path");
     ASSERT_OR_RETURN(get_hostfxr_path != nullptr, false);
 
     char buffer[PATH_MAX];
     size_t buffer_size = PATH_MAX;
     ASSERT_OR_RETURN(get_hostfxr_path(buffer, &buffer_size, nullptr) == 0, false);
-    dlclose(nethost);
+    Platform::CloseLibrary(nethost);
 
-    hostfxr = dlopen(buffer, RTLD_LAZY);
+    hostfxr = Platform::OpenLibrary(buffer, Platform::RTLD_LAZY);
     ASSERT_OR_RETURN(hostfxr != nullptr, false);
 
-    hostfxr_initialize_for_runtime_config = (hostfxr_initialize_for_runtime_config_fn)dlsym(hostfxr, "hostfxr_initialize_for_runtime_config");
-    hostfxr_get_runtime_delegate          = (hostfxr_get_runtime_delegate_fn)         dlsym(hostfxr, "hostfxr_get_runtime_delegate");
-    hostfxr_close                         = (hostfxr_close_fn)                        dlsym(hostfxr, "hostfxr_close");
+    hostfxr_initialize_for_runtime_config = (hostfxr_initialize_for_runtime_config_fn)Platform::GetSymbol(hostfxr, "hostfxr_initialize_for_runtime_config");
+    hostfxr_get_runtime_delegate          = (hostfxr_get_runtime_delegate_fn)         Platform::GetSymbol(hostfxr, "hostfxr_get_runtime_delegate");
+    hostfxr_close                         = (hostfxr_close_fn)                        Platform::GetSymbol(hostfxr, "hostfxr_close");
 
     ASSERT_OR_RETURN(hostfxr_initialize_for_runtime_config != nullptr, false);
     ASSERT_OR_RETURN(hostfxr_get_runtime_delegate != nullptr, false);

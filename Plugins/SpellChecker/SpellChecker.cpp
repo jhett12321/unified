@@ -6,8 +6,6 @@
 #include <hunspell/hunspell.hxx>
 #include <iostream>
 
-#include <dlfcn.h>
-
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::Services;
@@ -41,12 +39,12 @@ SpellChecker::SpellChecker(Services::ProxyServiceList* services)
 SpellChecker::~SpellChecker()
 {
     SpellChecker::dest_e(SpellChecker::created);
-    dlclose(SpellChecker::handle);
+    Platform::CloseLibrary(SpellChecker::handle);
 }
 
 uintptr_t SpellChecker::EstbSymFunction(const std::string& symbol)
 {
-    uintptr_t var = reinterpret_cast<uintptr_t>(dlsym(SpellChecker::handle, symbol.c_str()));
+    uintptr_t var = reinterpret_cast<uintptr_t>(Platform::GetSymbol(SpellChecker::handle, symbol.c_str()));
 
     if (!var)
     {
@@ -56,7 +54,7 @@ uintptr_t SpellChecker::EstbSymFunction(const std::string& symbol)
 }
 void SpellChecker::Init()
 {
-    SpellChecker::handle = dlopen("libhunspell.so", RTLD_NOW | RTLD_NODELETE);
+    SpellChecker::handle = Platform::OpenLibrary("libhunspell.so", Platform::RTLD_NOW | Platform::RTLD_NODELETE);
 
     if(!SpellChecker::handle)
     {

@@ -6,10 +6,6 @@
 #include "API/CNWVirtualMachineCommands.hpp"
 //for objectself
 #include "API/CVirtualMachine.hpp"
-// for dlopen
-#ifdef NWNX_LUA_LIBRARY
-#include <dlfcn.h>
-#endif
 
 
 using namespace NWNXLib;
@@ -42,9 +38,8 @@ namespace Lua {
         // on some lua_api functions.
         // Dont know if that is necessary for Mac
         #ifdef NWNX_LUA_LIBRARY
-        dlopen(NWNX_LUA_LIBRARY, RTLD_NOW | RTLD_NOLOAD | RTLD_GLOBAL);
+        Platform::OpenLibrary(NWNX_LUA_LIBRARY, Platform::RTLD_NOW | Platform::RTLD_NOLOAD | Platform::RTLD_GLOBAL);
         #endif
-
         // create new Lua instance and open libs
         m_luaInstance = luaL_newstate();
         luaL_openlibs(m_luaInstance);
