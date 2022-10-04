@@ -16,11 +16,10 @@
 
 #include <csignal>
 #include <regex>
-#include <dirent.h>
-#include <unistd.h>
 #include <cstdio>
 #include <sstream>
 #include <dlfcn.h>
+#include <filesystem>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -181,7 +180,7 @@ void NWNXCore::InitialSetupHooks()
     m_vmTagEffectHook      = Hooks::HookFunction(&CNWVirtualMachineCommands::ExecuteCommandTagEffect, &TagEffectHandler, Hooks::Order::Final);
     m_vmTagItemProperyHook = Hooks::HookFunction(&CNWVirtualMachineCommands::ExecuteCommandTagItemProperty, &TagItemPropertyHandler, Hooks::Order::Final);
     m_vmPlaySoundHook      = Hooks::HookFunction(&CNWVirtualMachineCommands::ExecuteCommandPlaySound, &PlaySoundHandler, Hooks::Order::Final);
-    
+
 
     m_destroyServerHook    = Hooks::HookFunction(&CAppManager::DestroyServer, &DestroyServerHandler, Hooks::Order::Final);
     m_mainLoopInternalHook = Hooks::HookFunction(&CServerExoAppInternal::MainLoop, &MainLoopInternalHandler, Hooks::Order::Final);
@@ -262,51 +261,50 @@ void NWNXCore::InitialSetupPlugins()
     constexpr static const char* pluginPrefix = NWNX_PLUGIN_PREFIX;
     const std::string prefix = pluginPrefix;
 
-    char cwd[PATH_MAX];
-    ASSERT(getcwd(cwd, sizeof(cwd)) != nullptr);
-
-    const auto pluginDir = Config::Get<std::string>("LOAD_PATH", cwd);
+    const auto pluginDirConf = Config::Get<std::string>("LOAD_PATH");
     const bool skipAllPlugins = Config::Get<bool>("SKIP_ALL", false);
 
-    LOG_INFO("Loading plugins from: %s", pluginDir);
-
-    std::vector<std::string> files;
-    if (auto dir = opendir(pluginDir.c_str()))
+    if (pluginDirConf.has_value())
     {
-        while (auto entry = readdir(dir))
+        const auto pluginDir = pluginDirConf.value();
+        LOG_INFO("Loading plugins from: %s", pluginDir);
+
+        std::vector<std::string> files;
+
+        for (const auto& entry : std::filesystem::directory_iterator(pluginDir))
         {
-            if (entry->d_type == DT_UNKNOWN || entry->d_type == DT_REG || entry->d_type == DT_LNK)
+            if(entry.is_regular_file() || entry.is_symlink() || entry.is_other())
             {
-                files.emplace_back(entry->d_name);
+                files.emplace_back(entry.path().filename().string());
             }
         }
-        closedir(dir);
-    }
-    // Sort by file name, so at least plugins are loaded in deterministic order.
-    std::sort(std::begin(files), std::end(files));
 
-    for (auto& dynamicLibrary : files)
-    {
-        const std::string& pluginName = dynamicLibrary;
-        const std::string pluginNameWithoutExtension = String::Basename(pluginName);
+        // Sort by file name, so at least plugins are loaded in deterministic order.
+        std::sort(std::begin(files), std::end(files));
 
-        if (pluginNameWithoutExtension == NWNX_CORE_PLUGIN_NAME || pluginNameWithoutExtension.compare(0, prefix.size(), prefix) != 0)
+        for (auto& dynamicLibrary : files)
         {
-            continue; // Not a plugin.
-        }
+            const std::string& pluginName = dynamicLibrary;
+            const std::string pluginNameWithoutExtension = String::Basename(pluginName);
 
-        if (pluginNameWithoutExtension == "NWNX_Experimental" && !Config::Get<bool>("LOAD_EXPERIMENTAL_PLUGIN", false))
-        {
-            continue;
-        }
+            if (pluginNameWithoutExtension == NWNX_CORE_PLUGIN_NAME || pluginNameWithoutExtension.compare(0, prefix.size(), prefix) != 0)
+            {
+                continue; // Not a plugin.
+            }
 
-        auto services = ConstructProxyServices(pluginNameWithoutExtension);
-        if (Config::Get<bool>("SKIP", (bool)skipAllPlugins, pluginNameWithoutExtension))
-        {
-            LOG_INFO("Skipping plugin %s due to configuration.", pluginNameWithoutExtension);
-            continue;
+            if (pluginNameWithoutExtension == "NWNX_Experimental" && !Config::Get<bool>("LOAD_EXPERIMENTAL_PLUGIN", false))
+            {
+                continue;
+            }
+
+            auto services = ConstructProxyServices(pluginNameWithoutExtension);
+            if (Config::Get<bool>("SKIP", (bool)skipAllPlugins, pluginNameWithoutExtension))
+            {
+                LOG_INFO("Skipping plugin %s due to configuration.", pluginNameWithoutExtension);
+                continue;
+            }
+            Plugin::Load(pluginDir + "/" + pluginName, std::move(services));
         }
-        Plugin::Load(pluginDir + "/" + pluginName, std::move(services));
     }
 }
 
