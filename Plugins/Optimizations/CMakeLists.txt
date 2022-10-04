@@ -1,3 +1,4 @@
+if(!MSVC)
 add_plugin(Optimizations
         "AsyncLogFlush.cpp"
         "GameObjectLookup.cpp"
@@ -6,3 +7,4 @@ add_plugin(Optimizations
         "ReconcileAutoMap.cpp"
         "CacheScriptChunks.cpp"
 )
+endif()

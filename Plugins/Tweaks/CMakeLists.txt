@@ -1,3 +1,4 @@
+if(!MSVC)
 add_plugin(Tweaks
     "AddPrestigeclassCasterLevels.cpp"
     "AlwaysReturnFullDEXStat.cpp"
@@ -34,3 +35,4 @@ add_plugin(Tweaks
     "UnhardcodeShields.cpp"
     "UncapDamageResistanceDamageFlags.cpp"
     "PreventAttackBonusBypassingReductions.cpp")
+endif()

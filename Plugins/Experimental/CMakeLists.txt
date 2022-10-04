@@ -1,3 +1,4 @@
+if(!MSVC)
 add_plugin(Experimental
     "AdjustReputationFix.cpp"
     "DisableLevelUpValidation.cpp"
@@ -5,3 +6,4 @@ add_plugin(Experimental
     "UnhardcodeRangerDualWield.cpp"
     "PlayerHitpointsAsPercentage.cpp"
     "IgnoreModuleVersion.cpp")
+endif()

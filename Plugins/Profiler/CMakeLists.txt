@@ -1,3 +1,4 @@
+if(!MSVC)
 add_plugin(Profiler
    "Profiler.cpp"
    "Timing.cpp"
@@ -9,3 +10,4 @@ add_plugin(Profiler
    "Targets/ObjectEventHandlers.cpp"
    "Targets/Pathing.cpp"
    "Targets/Scripts.cpp")
+endif()

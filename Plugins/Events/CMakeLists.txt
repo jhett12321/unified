@@ -1,3 +1,4 @@
+if(!MSVC)
 add_plugin(Events
     "Events.cpp"
     "Events/AssociateEvents.cpp"
@@ -34,3 +35,4 @@ add_plugin(Events
     "Events/TimingBarEvents.cpp"
     "Events/TrapEvents.cpp"
     "Events/UUIDEvents.cpp")
+endif()
