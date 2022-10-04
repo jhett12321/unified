@@ -1,0 +1,9 @@
+#ifndef NWNXLIB_FUNCTION_NO_VERSION_CHECK
+NWNX_EXPECT_VERSION(8193, 35);
+#endif
+
+NWNXLIB_FUNCTION(_ZN21CServerExoAppInternal8SaveGameEjR10CExoStringS1_P10CNWSPlayeriS1_, _ZN21CServerExoAppInternal8SaveGameEjR10CExoStringS1_P10CNWSPlayeriS1_, ?SaveGame@CServerExoAppInternal@@QEAAHIAEAVCExoString@@0PEAVCNWSPlayer@@H0@Z)
+NWNXLIB_FUNCTION(_ZN16CGameObjectArrayC1Ei, _ZN16CGameObjectArrayC1Ei, ??0CGameObjectArray@@QEAA@H@Z)
+NWNXLIB_FUNCTION(_ZN10CNWSPlayerD0Ev, _ZN10CNWSPlayerD0Ev, ??1CNWSPlayer@@UEAA@XZ)
+NWNXLIB_FUNCTION(_ZN10CNWSPlayerD1Ev, _ZN10CNWSPlayerD1Ev, ??1CNWSPlayer@@UEAA@XZ)
+NWNXLIB_FUNCTION(_ZN10CNWSModule15LoadModuleStartE10CExoStringiiRKN6NWSync13AdvertisementE, _ZN10CNWSModule15LoadModuleStartE10CExoStringiiRKN6NWSync13AdvertisementE, ?LoadModuleStart@CNWSModule@@QEAAIVCExoString@@HHAEBUAdvertisement@NWSync@@@Z)

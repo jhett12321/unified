@@ -1,5 +1,4 @@
-#include <dlfcn.h>
-#include <stdio.h>
+#include <Windows.h>
 
 #include "Functions.hpp"
 
@@ -12,11 +11,13 @@
 
 void NWNXLib::API::Functions::Initialize()
 {
-#define NWNXLIB_FUNCTION(name, symgcc, symmsvc)              \
-    name = const_cast<void*>(dlsym(RTLD_DEFAULT, #symgcc )); \
-    if (!name)                                             \
+    HMODULE module = GetModuleHandle(nullptr);
+
+#define NWNXLIB_FUNCTION(name, symgcc, symmsvc)                        \
+    name = reinterpret_cast<void*>(GetProcAddress(module, #symmsvc )); \
+    if (!name)                                          \
     {                                                      \
-        printf("dlsym(%s) = null\n", #symgcc);             \
+        printf("GetProcAddress(%s) = null\n", #symmsvc);   \
     }
 
 #include "FunctionsList.hpp"

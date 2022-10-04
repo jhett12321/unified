@@ -5,14 +5,10 @@
 namespace NWNXLib::API::Functions {
     void Initialize();
 
-#define NWNXLIB_FUNCTION(name) \
+#define NWNXLIB_FUNCTION(name, symgcc, symmsvc) \
     extern void* name;
 
-#ifdef _WIN32
-    static_assert(false, "Windows is not supported.");
-#else
-    #include "API/FunctionsLinux.hpp"
-#endif
+#include "FunctionsList.hpp"
 
 #undef NWNXLIB_FUNCTION
 }
