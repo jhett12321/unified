@@ -274,7 +274,7 @@ void NWNXCore::InitialSetupPlugins()
 
         for (const auto& entry : std::filesystem::directory_iterator(pluginDir))
         {
-            if(entry.is_regular_file() || entry.is_symlink() || entry.is_other())
+            if (entry.is_regular_file() || entry.is_symlink() || entry.is_other())
             {
                 files.emplace_back(entry.path().filename().string());
             }
