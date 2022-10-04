@@ -20,7 +20,7 @@ Plugin* Plugin::Find(const std::string& pluginName)
 {
     for (auto* plugin : s_plugins)
     {
-        if (!strcasecmp(pluginName.c_str(), plugin->m_name.c_str()))
+        if (!String::CompareIgnoreCase(pluginName.c_str(), plugin->m_name.c_str()))
             return plugin;
     }
     return nullptr;

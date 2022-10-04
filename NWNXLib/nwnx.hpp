@@ -190,6 +190,8 @@ namespace String
 
     std::string Basename(const std::string& path);
     bool EndsWith(const std::string& str, const std::string& suffix);
+
+    int CompareIgnoreCase(const char* str1, const char* str2);
 }
 
 namespace VectorMath
