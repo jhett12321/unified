@@ -103,7 +103,7 @@ ArgumentStack Weapon::SetWeaponFocusFeat(ArgumentStack&& args)
     }
     else
     {
-        m_WeaponFocusMap.insert({w_bitem, {(uint32_t)feat}});
+        m_WeaponFocusMap.insert({(uint32_t)w_bitem, {(uint32_t)feat}});
     }
     auto featName = pFeat->GetNameText();
     auto baseItemName = pBaseItem->GetNameText();
@@ -133,7 +133,7 @@ ArgumentStack Weapon::SetGreaterWeaponFocusFeat(ArgumentStack&& args)
     }
     else
     {
-        m_GreaterWeaponFocusMap.insert({w_bitem, {(uint32_t)feat}});
+        m_GreaterWeaponFocusMap.insert({(uint32_t)w_bitem, {(uint32_t)feat}});
     }
     auto featName = pFeat->GetNameText();
     auto baseItemName = pBaseItem->GetNameText();
@@ -163,7 +163,7 @@ ArgumentStack Weapon::SetEpicWeaponFocusFeat(ArgumentStack&& args)
     }
     else
     {
-        m_EpicWeaponFocusMap.insert({w_bitem, {(uint32_t)feat}});
+        m_EpicWeaponFocusMap.insert({(uint32_t)w_bitem, {(uint32_t)feat}});
     }
     auto featName = pFeat->GetNameText();
     auto baseItemName = pBaseItem->GetNameText();
@@ -261,7 +261,7 @@ ArgumentStack Weapon::SetWeaponImprovedCriticalFeat(ArgumentStack&& args)
     }
     else
     {
-        m_WeaponImprovedCriticalMap.insert({w_bitem, {(uint32_t)feat}});
+        m_WeaponImprovedCriticalMap.insert({(uint32_t)w_bitem, {(uint32_t)feat}});
     }
     auto featName = pFeat->GetNameText();
     auto baseItemName = pBaseItem->GetNameText();
@@ -291,7 +291,7 @@ ArgumentStack Weapon::SetWeaponSpecializationFeat(ArgumentStack&& args)
     }
     else
     {
-        m_WeaponSpecializationMap.insert({w_bitem, {(uint32_t)feat}});
+        m_WeaponSpecializationMap.insert({(uint32_t)w_bitem, {(uint32_t)feat}});
     }
     auto featName = pFeat->GetNameText();
     auto baseItemName = pBaseItem->GetNameText();
@@ -321,7 +321,7 @@ ArgumentStack Weapon::SetGreaterWeaponSpecializationFeat(ArgumentStack&& args)
     }
     else
     {
-        m_GreaterWeaponSpecializationMap.insert({w_bitem, {(uint32_t)feat}});
+        m_GreaterWeaponSpecializationMap.insert({(uint32_t)w_bitem, {(uint32_t)feat}});
     }
     auto featName = pFeat->GetNameText();
     auto baseItemName = pBaseItem->GetNameText();
@@ -351,7 +351,7 @@ ArgumentStack Weapon::SetEpicWeaponSpecializationFeat(ArgumentStack&& args)
     }
     else
     {
-        m_EpicWeaponSpecializationMap.insert({w_bitem, {(uint32_t)feat}});
+        m_EpicWeaponSpecializationMap.insert({(uint32_t)w_bitem, {(uint32_t)feat}});
     }
     auto featName = pFeat->GetNameText();
     auto baseItemName = pBaseItem->GetNameText();
@@ -381,7 +381,7 @@ ArgumentStack Weapon::SetEpicWeaponOverwhelmingCriticalFeat(ArgumentStack&& args
     }
     else
     {
-        m_EpicWeaponOverwhelmingCriticalMap.insert({w_bitem, {(uint32_t)feat}});
+        m_EpicWeaponOverwhelmingCriticalMap.insert({(uint32_t)w_bitem, {(uint32_t)feat}});
     }
     auto featName = pFeat->GetNameText();
     auto baseItemName = pBaseItem->GetNameText();
@@ -411,7 +411,7 @@ ArgumentStack Weapon::SetEpicWeaponDevastatingCriticalFeat(ArgumentStack&& args)
     }
     else
     {
-        m_EpicWeaponDevastatingCriticalMap.insert({w_bitem, {(uint32_t)feat}});
+        m_EpicWeaponDevastatingCriticalMap.insert({(uint32_t)w_bitem, {(uint32_t)feat}});
     }
     auto featName = pFeat->GetNameText();
     auto baseItemName = pBaseItem->GetNameText();
@@ -441,7 +441,7 @@ ArgumentStack Weapon::SetWeaponOfChoiceFeat(ArgumentStack&& args)
     }
     else
     {
-        m_WeaponOfChoiceMap.insert({w_bitem, {(uint32_t)feat}});
+        m_WeaponOfChoiceMap.insert({(uint32_t)w_bitem, {(uint32_t)feat}});
     }
     auto featName = pFeat->GetNameText();
     auto baseItemName = pBaseItem->GetNameText();
