@@ -1,9 +1,9 @@
 // https://docs.microsoft.com/en-us/dotnet/core/tutorials/netcore-hosting
 #include "nwnx.hpp"
 
-#include <algorithm>
 #include <string>
 #include <vector>
+#include <filesystem>
 
 #include "sdk/coreclr_delegates.h"
 #include "sdk/hostfxr.h"
@@ -54,38 +54,29 @@ static bool InitThunks()
         const auto hostBaseDir = "/usr/share/dotnet/packs/Microsoft.NETCore.App.Host.linux-x64/";
         const auto hostLibSuffix = "/runtimes/linux-x64/native/libnethost.so";
 
-        DIR* dir = opendir(hostBaseDir);
-
-        if (dir != nullptr)
+        std::vector<std::string> paths;
+        if(std::filesystem::exists(hostBaseDir))
         {
-            dirent* directoryEntry = readdir(dir);
-            std::vector<std::string> paths;
-
-            while (directoryEntry != nullptr)
+            for (const auto& entry : std::filesystem::directory_iterator(hostBaseDir))
             {
-                if (directoryEntry->d_type == DT_DIR)
+                if (entry.is_directory())
                 {
-                    const auto path = (std::string(hostBaseDir) + directoryEntry->d_name + hostLibSuffix);
-                    paths.push_back(path);
+                    paths.push_back(entry.path().string());
                 }
-
-                directoryEntry = readdir(dir);
             }
+        }
 
-            closedir(dir);
-
-            if (!paths.empty())
+        if (!paths.empty())
+        {
+            std::sort(paths.begin(), paths.end(), std::greater<std::string>());
+            for (std::string path : paths)
             {
-                std::sort(paths.begin(), paths.end(), std::greater<std::string>());
-                for (std::string path : paths)
-                {
-                    nethost = Platform::OpenLibrary(path.c_str(), Platform::RTLD_LAZY);
+                nethost = Platform::OpenLibrary(path.c_str(), Platform::RTLD_LAZY);
 
-                    if (nethost)
-                    {
-                        LOG_INFO("Loaded libnethost.so from: %s (autodetected)", path);
-                        break;
-                    }
+                if (nethost)
+                {
+                    LOG_INFO("Loaded libnethost.so from: %s (autodetected)", path);
+                    break;
                 }
             }
         }
