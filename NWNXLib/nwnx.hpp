@@ -104,11 +104,19 @@ namespace Hooks
 
     using Hook = std::unique_ptr<FunctionHook>;
 
+#if WIN32
+    template <typename T1, typename T2>
+    [[nodiscard]] Hook HookFunction(T1 original, T2 replacement, int32_t order = Order::Default)
+    {
+        return std::make_unique<FunctionHook>((void*&)original, (void*&)replacement, order);
+    }
+#else
     template <typename T1, typename T2>
     [[nodiscard]] Hook HookFunction(T1 original, T2 replacement, int32_t order = Order::Default)
     {
         return std::make_unique<FunctionHook>((void*)original, (void *)replacement, order);
     }
+#endif
 }
 
 namespace MessageBus
