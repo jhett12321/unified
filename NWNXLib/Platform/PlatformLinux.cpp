@@ -3,9 +3,7 @@
 #include <cstdio>
 
 #include <execinfo.h>
-#include <signal.h>
 #include <dlfcn.h>
-#include <map>
 
 namespace NWNXLib::Platform
 {
