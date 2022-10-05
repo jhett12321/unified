@@ -77,6 +77,11 @@ add_subdirectory(NWNXLib)
 # The core shared library.
 add_subdirectory(Core)
 
+# Windows only: Launcher executable for dll injection
+if (MSVC)
+    add_subdirectory(Launcher)
+endif()
+
 # The documentation generation.
 add_subdirectory(docgen)
 
