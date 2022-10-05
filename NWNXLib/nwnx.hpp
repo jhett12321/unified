@@ -44,9 +44,9 @@ namespace NWNXLib
 #if WIN32
 #define PluginEntryPoint(name) \
 void name();                         \
-BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved) \
+BOOL APIENTRY DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved) \
 { \
-if(fdwReason == DLL_PROCESS_ATTACH) { \
+if(dwReason == DLL_PROCESS_ATTACH) { \
 name(); \
 } \
 return TRUE; \
