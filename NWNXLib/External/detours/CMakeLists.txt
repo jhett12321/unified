@@ -14,6 +14,4 @@ add_library(detours STATIC
         src/uimports.cpp)
 
 set_property (SOURCE src/uimports.cpp APPEND PROPERTY HEADER_FILE_ONLY true)
-
-target_compile_options(detours PRIVATE /W4 /WX /Zi /MT /Gy /Gm- /Zl /Od)
 target_include_directories(detours PUBLIC src)
