@@ -1,7 +1,16 @@
 #include "nwnx.hpp"
+#include <windows.h>
 
 namespace NWNXLib::Platform
 {
+
+static struct {
+    long code;
+    const char *function;
+} lastError = {
+    0,
+    nullptr
+};
 
 bool IsDebuggerPresent()
 {
@@ -15,22 +24,58 @@ std::string GetStackTrace(uint8_t levels)
 
 void* OpenLibrary(const char* fileName, int flags)
 {
-    return nullptr;
+    HINSTANCE hInstance;
+
+    hInstance = LoadLibrary (fileName);
+    if (hInstance == nullptr) {
+        lastError.code = GetLastError ();
+        lastError.function = "LoadLibrary";
+    }
+
+    return hInstance;
 }
 
 int CloseLibrary(void* handle)
 {
-    return false;
+    BOOL ok;
+    int rc = 0;
+
+    ok = FreeLibrary ((HINSTANCE)handle);
+    if (!ok)
+    {
+        lastError.code = GetLastError ();
+        lastError.function = "FreeLibrary";
+        rc = -1;
+    }
+
+    return rc;
 }
 
 void* GetSymbol(void* handle, const char* name)
 {
-    return nullptr;
+    FARPROC ptr = GetProcAddress ((HINSTANCE)handle, name);
+    if (!ptr)
+    {
+        lastError.code = GetLastError ();
+        lastError.function = "GetProcAddress";
+    }
+
+    return (void *)(intptr_t)ptr;
 }
 
 const char* GetError()
 {
-    return nullptr;
+    static char errorStr [100];
+
+    if (lastError.code)
+    {
+        sprintf (errorStr, "%s error #%ld", lastError.function, lastError.code);
+        return errorStr;
+    }
+    else
+    {
+        return nullptr;
+    }
 }
 
 }
