@@ -2,10 +2,6 @@
 # ------------------------------------------------------
 
 add_library(Core SHARED ${ENTRYPOINT} NWNXCore.cpp NWNXCoreVM.cpp)
-if(MSVC)
-    target_link_libraries(Core PRIVATE detours)
-    set_target_properties(Core PROPERTIES LINK_FLAGS /EXPORT:DetourFinishHelperProcess,@1,NONAME)
-endif()
 
 add_sanitizers(Core)
 set_target_properties(Core PROPERTIES PREFIX "${PLUGIN_PREFIX}")

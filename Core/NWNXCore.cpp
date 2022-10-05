@@ -113,6 +113,8 @@ static NWNXCore s_core;
 NWNXCore* g_core = nullptr; // Used to access the core class in hook or event handlers.
 bool g_CoreShuttingDown = false;
 
+PluginEntryPoint(NWNXCore)
+
 NWNXCore::NWNXCore()
     : m_ScriptChunkRecursion(0)
 {
@@ -594,14 +596,4 @@ int32_t NWNXCore::MainLoopInternalHandler(CServerExoAppInternal *pServerExoAppIn
     return g_core->m_mainLoopInternalHook->CallOriginal<int32_t>(pServerExoAppInternal);
 }
 
-}
-
-BOOL APIENTRY DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
-{
-    if(dwReason == DLL_PROCESS_ATTACH)
-    {
-        printf("NWNX Init");
-        Core::NWNXCore();
-    }
-    return TRUE;
 }
