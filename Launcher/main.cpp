@@ -3,7 +3,7 @@
 #include <string>
 
 static const char exename[] = "nwserver.exe";
-static const char dllname[] = "NWNX_Core.dll";
+static const char dllname[] = "NWNX_Bootstrap.dll";
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
