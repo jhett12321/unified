@@ -595,3 +595,13 @@ int32_t NWNXCore::MainLoopInternalHandler(CServerExoAppInternal *pServerExoAppIn
 }
 
 }
+
+BOOL APIENTRY DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
+{
+    if(dwReason == DLL_PROCESS_ATTACH)
+    {
+        printf("NWNX Init");
+        Core::NWNXCore();
+    }
+    return TRUE;
+}
